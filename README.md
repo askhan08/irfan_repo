@@ -1,12 +1,30 @@
 # terraform-aws
+ 
+## This document having command refernece to switch environment folders and switch profile..     
 
-cd pro
-export AWS_PROFILE=pro
-then run
-terraform init
-terraform plan
-terraform apply
+#### To swtich to PRO Environemnt and export AWS Profile     
 
-If you want to destroy PRO components
-cd ../pro
-terraform destroy
+```    
+
+cd pro   
+export AWS_PROFILE=pro   
+
+```  
+
+##### Execute terrafomr commands..    
+
+``` 
+
+terraform init    
+terraform plan    
+terraform apply    
+```   
+
+##### If you want to destroy PRO components    
+
+```   
+cd ../pro    
+terraform destroy      
+```    
+
+
