@@ -52,3 +52,68 @@ resource "aws_route_table_association" "web-rt-ass" {
   route_table_id = aws_route_table.web-rt.id
   subnet_id = element(aws_subnet.web-subnet.*.id, count.index)
 }
+
+resource "aws_eip" "ngw-eip" {
+  vpc = true
+}
+
+resource "aws_nat_gateway" "web-nw" {
+  subnet_id = element(aws_subnet.web-subnet.*.id, 0)
+  allocation_id = aws_eip.ngw-eip.id
+}
+
+resource "aws_route_table" "app-rt" {
+  vpc_id = aws_vpc.main-vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.web-nw.id
+  }
+}
+
+resource "aws_route_table_association" "app-rt-ass" {
+  count = length(var.app-subnets)
+  route_table_id = aws_route_table.app-rt.id
+  subnet_id = element(aws_subnet.app-subnet.*.id, count.index)
+}
+
+resource "aws_security_group" "web-sg" {
+  name = var.web-sg
+  vpc_id = aws_vpc.main-vpc.id
+  description = "tfc btw public and web"
+  dynamic "ingress" {
+    for_each = var.web_ports
+    content {
+      from_port = ingress.value
+      protocol  = "tcp"
+      to_port   = ingress.value
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+  egress {
+    from_port = 0
+    protocol  = "-1"
+    to_port   = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "app-sg" {
+  name = var.app-sg
+  vpc_id = aws_vpc.main-vpc.id
+  description = "tfc btw app server and web server"
+  dynamic "ingress" {
+    for_each = var.app_ports
+    content {
+      from_port = ingress.value
+      protocol  = "tcp"
+      to_port   = ingress.value
+      security_groups = [aws_security_group.web-sg.id]
+    }
+  }
+  egress {
+    from_port = 0
+    protocol  = "-1"
+    to_port   = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

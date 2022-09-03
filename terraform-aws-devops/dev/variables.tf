@@ -67,3 +67,21 @@ variable "globaltag" {
     Name = "global"
   }
 }
+
+variable "web-sg" {
+  default = "MYORG-DEV-WEB-SG"
+}
+
+variable "app-sg" {
+  default = "MYORG-DEV-APP-SG"
+}
+
+variable "web_ports" {
+  type = list(number)
+  default = [22 , 80]
+}
+
+variable "app_ports" {
+  type = list(number)
+  default = [22 , 5000]
+}

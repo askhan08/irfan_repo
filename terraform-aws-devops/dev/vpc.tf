@@ -10,4 +10,8 @@ module "network" {
   db-subnets = var.db-subnets
   dbtag = var.dbtag
   globaltag = var.globaltag
+  web-sg = var.web-sg
+  app-sg = var.app-sg
+  app_ports = var.app_ports
+  web_ports = var.web_ports
 }

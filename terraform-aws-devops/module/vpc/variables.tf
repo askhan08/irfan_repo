@@ -47,3 +47,18 @@ variable "globaltag" {
     Name = string
   })
 }
+variable "web-sg" {
+  type = string
+}
+
+variable "app-sg" {
+  type = string
+}
+
+variable "web_ports" {
+  type = list(number)
+}
+
+variable "app_ports" {
+  type = list(number)
+}
