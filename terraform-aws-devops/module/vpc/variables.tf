@@ -1,3 +1,6 @@
+variable "project" {}
+variable "pillar" {}
+
 variable "vpc-cidr" {
   type = string
 }
@@ -19,6 +22,7 @@ variable "azs" {
 variable "webtag" {
   type = object({
     Name = string
+    Tier = string
   })
 }
 
@@ -29,6 +33,7 @@ variable "app-subnets" {
 variable "apptag" {
   type = object({
     Name = string
+    Tier = string
   })
 }
 
@@ -39,6 +44,7 @@ variable "db-subnets" {
 variable "dbtag" {
   type = object({
     Name = string
+    Tier = string
   })
 }
 
@@ -46,13 +52,6 @@ variable "globaltag" {
   type = object({
     Name = string
   })
-}
-variable "web-sg" {
-  type = string
-}
-
-variable "app-sg" {
-  type = string
 }
 
 variable "web_ports" {

@@ -20,7 +20,6 @@ resource "aws_subnet" "app-subnet" {
   vpc_id = aws_vpc.main-vpc.id
   cidr_block = element(var.app-subnets, count.index)
   availability_zone = element(var.azs, count.index)
-  map_public_ip_on_launch = true
   tags = var.apptag
 }
 
@@ -30,7 +29,6 @@ resource "aws_subnet" "db-subnet" {
   vpc_id = aws_vpc.main-vpc.id
   cidr_block = element(var.db-subnets, count.index)
   availability_zone = element(var.azs, count.index)
-  map_public_ip_on_launch = true
   tags = var.dbtag
 }
 
@@ -76,8 +74,15 @@ resource "aws_route_table_association" "app-rt-ass" {
   subnet_id = element(aws_subnet.app-subnet.*.id, count.index)
 }
 
+module "sg-label-web" {
+  source = "../label"
+  namespace  = var.project
+  stage      = var.pillar
+  name       = "WEB-SG"
+}
+
 resource "aws_security_group" "web-sg" {
-  name = var.web-sg
+  name = module.sg-label-web.id
   vpc_id = aws_vpc.main-vpc.id
   description = "tfc btw public and web"
   dynamic "ingress" {
@@ -97,8 +102,15 @@ resource "aws_security_group" "web-sg" {
   }
 }
 
+module "sg-label-app" {
+  source = "../label"
+  namespace  = upper(var.project)
+  stage      = upper(var.pillar)
+  name       = "APP-SG"
+}
+
 resource "aws_security_group" "app-sg" {
-  name = var.app-sg
+  name = module.sg-label-app.id
   vpc_id = aws_vpc.main-vpc.id
   description = "tfc btw app server and web server"
   dynamic "ingress" {
