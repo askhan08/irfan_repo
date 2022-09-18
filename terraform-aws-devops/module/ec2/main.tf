@@ -15,7 +15,7 @@ data "aws_security_group" "web-sg" {
 data "aws_security_group" "app-sg" {
   filter {
     name   = "group-name"
-    values = ["${lower(var.project)}-${lower(var.pillar)}-web-sg"]
+    values = ["${lower(var.project)}-${lower(var.pillar)}-app-sg"]
   }
 }
 
@@ -48,14 +48,14 @@ resource "tls_private_key" "instance-pvt-key" {
 
 resource "aws_key_pair" "instance-key" {
   public_key = tls_private_key.instance-pvt-key.public_key_openssh
-  key_name = "login-key"
+  key_name = var.keyname
 }
 
 
 resource "aws_instance" "generic-web" {
   ami = "ami-05fa00d4c63e32376"
   instance_type = "t2.micro"
-  security_groups = [data.aws_security_group.web-sg.id]
+  security_groups = ["${data.aws_security_group.web-sg.id}"]
   subnet_id = element(data.aws_subnets.web-subnet-id.ids, 0)
   key_name = aws_key_pair.instance-key.key_name
   depends_on = [data.aws_security_group.web-sg,data.aws_subnets.web-subnet-id]
@@ -67,7 +67,7 @@ resource "aws_instance" "generic-web" {
 resource "aws_instance" "generic-app" {
   ami = "ami-05fa00d4c63e32376"
   instance_type = "t2.micro"
-  security_groups = [data.aws_security_group.app-sg.id]
+  security_groups = ["${data.aws_security_group.app-sg.id}"]
   subnet_id = element(data.aws_subnets.app-subnet-id.ids, 0)
   key_name = aws_key_pair.instance-key.key_name
   depends_on = [data.aws_security_group.app-sg, data.aws_subnets.app-subnet-id]

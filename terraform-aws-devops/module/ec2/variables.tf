@@ -4,3 +4,4 @@ variable "apptag" {}
 
 variable "project" {}
 variable "pillar" {}
+variable "keyname" {}

@@ -80,3 +80,7 @@ variable "app_ports" {
   type = list(number)
   default = [22 , 5000]
 }
+
+variable "keyname" {
+  type = string
+}

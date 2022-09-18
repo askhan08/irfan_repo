@@ -6,4 +6,5 @@ module "compute" {
   pillar = var.pillar
   project = var.project
   depends_on = [module.network]
+  keyname = var.keyname
 }
