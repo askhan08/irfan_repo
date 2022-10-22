@@ -50,7 +50,9 @@ resource "aws_key_pair" "instance-key" {
   public_key = tls_private_key.instance-pvt-key.public_key_openssh
   key_name = var.keyname
 }
-
+data "aws_ssm_parameter" "" {
+  name = ""
+}
 
 resource "aws_instance" "generic-web" {
   ami = "ami-05fa00d4c63e32376"
@@ -59,6 +61,7 @@ resource "aws_instance" "generic-web" {
   subnet_id = element(data.aws_subnets.web-subnet-id.ids, 0)
   key_name = aws_key_pair.instance-key.key_name
   depends_on = [data.aws_security_group.web-sg,data.aws_subnets.web-subnet-id]
+  user_data = "{ data }"
   tags = {
     Name = "web-server1"
   }

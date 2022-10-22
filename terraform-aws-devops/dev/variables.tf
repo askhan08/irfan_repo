@@ -78,7 +78,7 @@ variable "web_ports" {
 
 variable "app_ports" {
   type = list(number)
-  default = [22 , 5000]
+  default = [22 , 8080]
 }
 variable "keyname" {
   type = string

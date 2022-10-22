@@ -74,6 +74,20 @@ resource "aws_route_table_association" "app-rt-ass" {
   subnet_id = element(aws_subnet.app-subnet.*.id, count.index)
 }
 
+resource "aws_route_table" "db-rt" {
+  vpc_id = aws_vpc.main-vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.web-nw.id
+  }
+}
+
+resource "aws_route_table_association" "db-rt-ass" {
+  count = length(var.db-subnets)
+  route_table_id = aws_route_table.db-rt.id
+  subnet_id = element(aws_subnet.db-subnet.*.id, count.index)
+}
+
 module "sg-label-web" {
   source = "../label"
   namespace  = var.project
