@@ -14,4 +14,5 @@ module "network" {
   web_ports = var.web_ports
   pillar = var.pillar
   project = var.project
+  db_ports = var.db_ports
 }
