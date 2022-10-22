@@ -61,3 +61,7 @@ variable "web_ports" {
 variable "app_ports" {
   type = list(number)
 }
+
+variable "db_ports" {
+  type = list(number)
+}

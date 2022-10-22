@@ -143,3 +143,30 @@ resource "aws_security_group" "app-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+module "sg-label-db" {
+  source = "../label"
+  namespace  = upper(var.project)
+  stage      = upper(var.pillar)
+  name       = "DB-SG"
+}
+resource "aws_security_group" "db-sg" {
+  name = module.sg-label-db.id
+  vpc_id = aws_vpc.main-vpc.id
+  description = "tfc btw DB server and APP server"
+  dynamic "ingress" {
+    for_each = var.db_ports
+    content {
+      from_port = ingress.value
+      protocol  = "tcp"
+      to_port   = ingress.value
+      security_groups = [aws_security_group.app-sg.id]
+    }
+  }
+  egress {
+    from_port = 0
+    protocol  = "-1"
+    to_port   = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
