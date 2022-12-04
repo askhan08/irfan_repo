@@ -17,3 +17,7 @@ output "web_subnets" {
 output "app_subnets" {
   value = aws_subnet.app-subnet.*.id
 }
+
+#output "eks_sg" {
+#  value = aws_security_group.eks-sg.id
+#}

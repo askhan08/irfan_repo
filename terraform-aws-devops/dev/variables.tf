@@ -83,7 +83,7 @@ variable "app_ports" {
 
 variable "db_ports" {
   type = list(number)
-  default = [22 , 27017]
+  default = [22 , 3306]
 }
 
 variable "keyname" {

@@ -12,7 +12,7 @@ gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc
 EOF
 
 sudo yum -y install  mongodb-org
-#sudo sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/' /etc/mongod.conf
+sudo sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/' /etc/mongod.conf
 sudo systemctl start mongod
 sudo systemctl enable mongod
 ###########

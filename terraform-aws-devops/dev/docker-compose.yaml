@@ -1,0 +1,20 @@
+version: "3"
+services:
+  spring:
+    depends_on: [dbserver]
+    image: sajinibm/customerportal:springv2
+    ports:
+      - 8000:8080
+    links:
+      - dbserver
+    restart: always
+  dbserver:
+    image: sajinibm/customerportal:dbv1
+    ports:
+      - 27017:27017
+    restart: always
+    volumes:
+      - knote:/data/db
+
+volumes:
+  knote:

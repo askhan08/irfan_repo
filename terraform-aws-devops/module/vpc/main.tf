@@ -144,6 +144,31 @@ resource "aws_security_group" "app-sg" {
   }
 }
 
+#module "sg-label-eks" {
+#  source = "../label"
+#  namespace  = upper(var.project)
+#  stage      = upper(var.pillar)
+#  name       = "EKS-SG"
+#}
+#
+#resource "aws_security_group" "eks-sg" {
+#  name = module.sg-label-eks.id
+#  vpc_id = aws_vpc.main-vpc.id
+#  description = "sg for eks control plane"
+#  ingress {
+#    from_port = 0
+#    to_port   = 0
+#    protocol  = "-1"
+#    cidr_blocks = ["0.0.0.0/0"]
+#  }
+#  egress {
+#    from_port = 0
+#    to_port   = 0
+#    protocol  = "-1"
+#    cidr_blocks = ["0.0.0.0/0"]
+#  }
+#}
+
 module "sg-label-db" {
   source = "../label"
   namespace  = upper(var.project)
