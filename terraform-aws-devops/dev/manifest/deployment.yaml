@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-dep
+  namespace: stack01
+  labels:
+    env: dev
+    type: web-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: dev
+      type: web-dep
+  template:
+    metadata:
+      name: frontend-temp
+      namespace: stack01
+      labels:
+        env: dev
+        type: web-dep
+    spec:
+      containers:
+      - image: httpd:latest
+        imagePullPolicy: Always
+        name: webapp
+        ports:
+        - containerPort: 80
+          protocol: TCP
+          name: apache
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 150m
+            memory: 150Mi

@@ -26,6 +26,7 @@ data "aws_subnets" "app-subnet-id" {
 resource "aws_eks_cluster" "eks-cluster" {
   name     = module.sg-label-eks.id
   role_arn = aws_iam_role.eks_role.arn
+  version = "1.23"
   vpc_config {
     security_group_ids = []
     subnet_ids = data.aws_subnets.app-subnet-id.ids
@@ -41,6 +42,7 @@ resource "aws_eks_node_group" "eks-cluster-nodes" {
   node_role_arn   = aws_iam_role.node_role.arn
   subnet_ids      = data.aws_subnets.app-subnet-id.ids
   instance_types = ["t2.small"]
+  version = "1.23"
   scaling_config {
     desired_size = 3
     max_size     = 5

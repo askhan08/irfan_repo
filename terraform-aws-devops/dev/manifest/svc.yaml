@@ -1,0 +1,39 @@
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: frontend-svc
+#  namespace: stack01
+#  labels:
+#    env: dev
+#    type: web
+#spec:
+#  type: NodePort
+#  ports:
+#    - name: apache
+#      nodePort: 30001
+#      port: 80
+#      targetPort: 80
+#      protocol: TCP
+#  selector:
+#    env: dev
+#    type: web
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+  namespace: stack01
+  labels:
+    env: dev
+    type: web
+spec:
+  type: LoadBalancer
+  ports:
+    - name: apache
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    env: dev
+    type: web
