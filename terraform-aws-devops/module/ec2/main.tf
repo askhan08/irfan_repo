@@ -5,7 +5,7 @@ data "aws_vpc" "vpcid" {
   }
 }
 
-data "aws_security_group" "web-sg" {
+data "aws_security_group" "web1-sg" {
   filter {
     name   = "group-name"
     values = ["${lower(var.project)}-${lower(var.pillar)}-web-sg"]
